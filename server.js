@@ -74,15 +74,15 @@ app.get('/genre', function (req, res) {
 });
   
 
-app.get('/movies:genre', function (req, res) {
-  var genre = req.params.genre;
-  request(, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      console.log(body);
-      res.send(body)
-    }
-  })
-});
+// app.get('/movies:genre', function (req, res) {
+//   var genre = req.params.genre;
+//   request(, function (error, response, body) {
+//     if (!error && response.statusCode == 200) {
+//       console.log(body);
+//       res.send(body)
+//     }
+//   })
+// });
 
 
  app.listen(8000);

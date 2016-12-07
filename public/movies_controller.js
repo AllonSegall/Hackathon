@@ -9,10 +9,13 @@ app.controller('moviesController', ['$scope','moviesService','$window' , functio
 
   var moviesOptions = [];
 
+  moviesService.getGenreList().then(function () {
+       $scope.genreOptions = moviesService.genre;
+       $scope.selectedGenre = moviesService.genre[0];
+  });
+  
 
-  $scope.genreOptions = moviesService.genre;
-
-  $scope.selectedGenre = moviesService.genre[0];
+  
 
   $scope.pgOptions = moviesService.pg;
 
@@ -27,6 +30,8 @@ app.controller('moviesController', ['$scope','moviesService','$window' , functio
       for(var i = 0; i < 2; i++){
         moviesOptions[i] = moviesService.getRandMovie();
       }
+
+      
   };
 
   $scope.btnRemove = function(movie){
