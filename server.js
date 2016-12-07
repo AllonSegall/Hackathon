@@ -1,45 +1,90 @@
+
+/*********include****************/
+
 var express = require('express');
+var request = require('request');
+var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
+
+mongoose.connect('mongodb://localhost/movies');
+
+/**********Set Up****************/
 
 var app = express();
 
-var http = require('http');
+app.use(express.static('public'));
+app.use(express.static('node_modules'));
 
-var options = {
-	host: 'www.google.com',
-	path: '/index.html'
+app.use(bodyParser.json());   // This is the type of body we're interested in
+app.use(bodyParser.urlencoded({extended: false}));
+
+// app.set('view engine', 'ejs');
+
+
+
+/***************Vars*******************/
+//test URL
+var opt = 'https://api.themoviedb.org/3/movie/550?api_key=ac5bfb1c99b5f392467f92b03c6d872b';
+
+var getGenreListUrl = "https://api.themoviedb.org/3/genre/movie/list?api_key=ac5bfb1c99b5f392467f92b03c6d872b&language=en-US"
+
+//template for andy garcia:
+var getActorByNameUrl = "https://api.themoviedb.org/3/search/person?api_key=ac5bfb1c99b5f392467f92b03c6d872b&query=andy%20garcia"
+
+
+
+/*************API Functionality***************/
+
+var data = {};
+var requestDataFromApi = function(url){
+  return request(url, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      console.log(body);
+      data = body;
+
+    }
+  })
 };
 
-var req = http.get(options, function(res) {
-  console.log('STATUS: ' + res.statusCode);
-  console.log('HEADERS: ' + JSON.stringify(res.headers));
 
-  // Buffer the body entirely for processing as a whole.
-  var bodyChunks = [];
-  res.on('data', function(chunk) {
-    // You can process streamed parts here...
-    bodyChunks.push(chunk);
-  }).on('end', function() {
-    var body = Buffer.concat(bodyChunks);
-    console.log('BODY: ' + body);
-    // ...and/or process the entire body here.
+//test:
+ // requestDataFromApi(getGenreListUrl);
+ // requestDataFromApi(getActorByNameUrl);
+
+
+
+/*******************Event Handlers*******************/
+
+//Sending HTML bundle on first GET
+app.get('/', function (req, res) {
+  res.sendFile(__dirname + "/index.html");
+
+});
+
+//Send genre List from API to client on request
+app.get('/genre', function (req, res) {
+
+  request(getGenreListUrl, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      console.log(body);
+      res.send(body)
+    }
+  })
+    
+});
+  
+
+app.get('/movies:genre', function (req, res) {
+  var genre = req.params.genre;
+  request(, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      console.log(body);
+      res.send(body)
+    }
   })
 });
 
-req.on('error', function(e) {
-  console.log('ERROR: ' + e.message);
-});
+
+ app.listen(8000);
 
 
-
-
-app.listen(8000);
-/*
-var api ="https://api.themoviedb.org/3/discover/movie?api_key=51709f2e74017c9f066e0946cb8568e3&with_genres=28&with_cast=500&sort_by=popularity.desc"
-
-
-http.get("https://api.themoviedb.org/3/discover/movie?api_key=51709f2e74017c9f066e0946cb8568e3&with_genres=28&with_cast=500&sort_by=popularity.desc", function(req, res){
-console.log(api)
-res.send(api)
-});
-*/
-//https://api.themoviedb.org/3/discover/movie?api_key=51709f2e74017c9f066e0946cb8568e3&with_genres=28&with_cast=500&sort_by=popularity.desc
