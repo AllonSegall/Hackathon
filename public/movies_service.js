@@ -33,7 +33,7 @@ app.factory('moviesService', ['$http', function ($http) {
   var movies = {
     moviesOptions: [],
     moviesPull: [],
-    actors: [],
+    actor: {},
     genre: [],
     pg:[]
 
@@ -54,13 +54,18 @@ app.factory('moviesService', ['$http', function ($http) {
     }
   };
 
+  movies.getGenreById = function(id){
+    for(i in movies.genre){
+      if(id == movies.genre[i].id){
+        return movies.genre[i].name;
+      }
+    }
+  }
 
   movies.emptyMoviesPull = function(){
     movies.moviesPull = [];
   }
  
-
-
 
   /*************server shit***************/
 
@@ -82,10 +87,11 @@ app.factory('moviesService', ['$http', function ($http) {
       var tempMovieList = [];
       angular.copy(data.results, tempMovieList);
       for(var i =0; i < tempMovieList.length; i++){
+
         movies.moviesPull.push(
           {
             title: tempMovieList[i].title,
-            genre: genre.id,
+            genre: genre.name,
             img: "https://image.tmdb.org/t/p/w600_and_h900_bestv2" + tempMovieList[i].backdrop_path,
             overview: tempMovieList[i].overview
           })
@@ -103,7 +109,7 @@ app.factory('moviesService', ['$http', function ($http) {
     return $http.get('/actor' + actorName).success(function (data) {
       
       debugger;
-      movies.actors.push({name: actorName, id: data.results[0].id})
+      movies.actor = {name: actorName, id: data.results[0].id};
       console.log(data.results[0].id)
 
     });
@@ -118,10 +124,12 @@ app.factory('moviesService', ['$http', function ($http) {
       var tempMovieList = [];
       angular.copy(data.results, tempMovieList);
       for(var i =0; i < tempMovieList.length ; i++){
+      var currentGenre = movies.getGenreById(tempMovieList[i].genre_ids[0]);
+
         movies.moviesPull.push(
           {
             title: tempMovieList[i].title,
-            genre: "genre",
+            genre: currentGenre,
             img: "https://image.tmdb.org/t/p/w600_and_h900_bestv2" + tempMovieList[i].backdrop_path,
             overview: tempMovieList[i].overview
           })

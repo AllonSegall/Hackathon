@@ -21,6 +21,8 @@ app.controller('moviesController', ['$scope','moviesService','$window' , functio
 
   $scope.pgOptions = moviesService.pg;
 
+  $scope.actorModel = "";
+
   $scope.selectedpg = moviesService.pg[0];
 
   var moviesOptions = [];
@@ -36,27 +38,28 @@ app.controller('moviesController', ['$scope','moviesService','$window' , functio
 
   $scope.btnRand = function(){
 
-      moviesService.emptyMoviesPull();
+    moviesService.emptyMoviesPull();
+    //moviesOptions = [];
 
-      //Getting movies by Genre
-      // moviesService.getMoviesByGenre($scope.selectedGenre).then(function () {
-        
-      //   for(var i = 0; i < 2; i++){
-      //     moviesOptions[i] = moviesService.getRandMovie();
-      //   }
-      // });
 
-      debugger;
-      moviesService.actorIdByActorName($scope.actorModel).then(function (){
-        moviesService.getMoviesByActor(moviesService.actors[0].id).then(function () {
+    if($scope.actorModel == ""){ //Getting movies by Genre
+      moviesService.getMoviesByGenre($scope.selectedGenre).then(function () {
         
         for(var i = 0; i < 2; i++){
           moviesOptions[i] = moviesService.getRandMovie();
         }
-      });  
+      });
+    }else{ //Getting movies by Actor
+      moviesService.actorIdByActorName($scope.actorModel).then(function (){
+        moviesService.getMoviesByActor(moviesService.actor.id).then(function () {
+        
+          for(var i = 0; i < 2; i++){
+          moviesOptions[i] = moviesService.getRandMovie();
+          }
+        });  
       })
-           
-      
+    }
+         
   };
 
 
