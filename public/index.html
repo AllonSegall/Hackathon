@@ -15,11 +15,22 @@
           <div class="col-md-10 col-md-offset-1" ng-model="placeholder">
             <div class="btn-group">
 
-              <div class="dropdownGenre">
+              <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Randomize By
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2" ng-model="selectedSerchBy">
+                  <li> <button type="button" class="btn btn-link Rgenre" ng-click="makeShowG()">Genre</button></li>
+                  <li> <button type="button" class="btn btn-link Ractor" ng-click="makeShowA()">Actor</button></li>
+                </ul>
+              </div>
+
+              <div class="dropdownGenre" ng-hide="customG">
                 <select class="btn btn-primary dropdown-toggle" ng-options="item as item.name for item in genreOptions track by item.id" ng-model="selectedGenre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></select>
               </div> <!-- dropdown genre closer -->
 
-              <form class="actor_input">
+              <form class="actor_input" ng-hide="customA">
                 <input type="text" name="actor_search" placeholder="Actors" ng-model="actorModel">
               </form>
             </div> <!-- btn-group closer -->
