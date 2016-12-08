@@ -24,39 +24,32 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 /***************Vars*******************/
 
+// Key 
 var key = "?api_key=ac5bfb1c99b5f392467f92b03c6d872b";
 
-//test URL
-var opt = 'https://api.themoviedb.org/3/movie/550';
-
+//URL templste for getting the genre list
 var getGenreListUrl = "https://api.themoviedb.org/3/genre/movie/list"+ key + "&language=en-US";
 
-//template for andy garcia:
+//URL template for getting actor by name
 var getActorByNameUrl = "https://api.themoviedb.org/3/search/person" + key + "&query="
 
+//URL template for getting movies list by Genre id
 var getMoviesByGenreUrl = "https://api.themoviedb.org/3/discover/movie" + key + "&with_genres=";
 
+//URL template for getting movies list by actor id
 var getMoviesByActorIdUrl = "https://api.themoviedb.org/3/discover/movie" + key + "&with_cast=";
 
 
 /*************API Functionality***************/
 
-var data = {};
+//Gettint Data from out external API 
 var requestDataFromApi = function(url){
   return request(url, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      console.log(body);
-      data = body;
-
+      //console.log(body);
     }
   })
 };
-
-
-//test:
- // requestDataFromApi(getGenreListUrl);
- // requestDataFromApi(getActorByNameUrl);
-
 
 
 /*******************Event Handlers*******************/
@@ -79,7 +72,7 @@ app.get('/genre', function (req, res) {
     
 });
   
-
+//Sending list of movies by genre id
 app.get('/moviesByGenre:genreId', function (req, res) {
   var genre = req.params.genreId;
   console.log(genre);
@@ -91,6 +84,7 @@ app.get('/moviesByGenre:genreId', function (req, res) {
   })
 });
 
+//Sending actor id by actor name
 app.get('/actor:actorName', function (req, res) {
   var actor = req.params.actorName;
   console.log(actor);
@@ -102,7 +96,7 @@ app.get('/actor:actorName', function (req, res) {
   })
 });
 
-
+//Sending list of movies by actor id
 app.get('/moviesByActor:actorId', function (req, res) {
   var actor = req.params.actorId;
   console.log(actor);
@@ -113,6 +107,7 @@ app.get('/moviesByActor:actorId', function (req, res) {
     }
   })
 });
+
  app.listen(8000);
 
 

@@ -30,6 +30,7 @@
 
 app.factory('moviesService', ['$http', function ($http) {
 
+  //movies obj
   var movies = {
     moviesOptions: [],
     moviesPull: [],
@@ -42,18 +43,19 @@ app.factory('moviesService', ['$http', function ($http) {
   
   movies.pg = dummyPG;
 
+  //Helper func to get a random movie obj from the movies pull
   movies.getRandMovie = function(){
     if(movies.moviesPull.length > 0){
       var movieIndex = Math.floor((Math.random() * (movies.moviesPull.length-1)));
       var temp = movies.moviesPull[movieIndex];
-      console.log(temp);
       movies.moviesPull.splice(movieIndex, 1);
       return temp;
     }else{
-      false;
+      return false;
     }
   };
 
+  //Helper func to retrieve genre name by genre id
   movies.getGenreById = function(id){
     for(i in movies.genre){
       if(id == movies.genre[i].id){
@@ -62,12 +64,13 @@ app.factory('moviesService', ['$http', function ($http) {
     }
   }
 
+  //Helper func for emptying the movies pull
   movies.emptyMoviesPull = function(){
     movies.moviesPull = [];
   }
  
 
-  /*************server shit***************/
+  /*************server comunication***************/
 
 
   //Ask for the Genre list from the server
@@ -82,12 +85,10 @@ app.factory('moviesService', ['$http', function ($http) {
   movies.getMoviesByGenre = function (genre) {
 
      return $http.get('/moviesByGenre' + genre.id).success(function (data) {
-      
-      console.log(data.results)
+
       var tempMovieList = [];
       angular.copy(data.results, tempMovieList);
       for(var i =0; i < tempMovieList.length; i++){
-
         movies.moviesPull.push(
           {
             title: tempMovieList[i].title,
@@ -95,31 +96,25 @@ app.factory('moviesService', ['$http', function ($http) {
             img: "https://image.tmdb.org/t/p/w600_and_h900_bestv2" + tempMovieList[i].backdrop_path,
             overview: tempMovieList[i].overview
           })
-
       }
-      console.log(movies.moviesPull);
-
     });
   };
 
-
-
+  //Ask for actor id by actor name
   movies.actorIdByActorName = function(actorName){
 
     return $http.get('/actor' + actorName).success(function (data) {
-      
-      debugger;
       movies.actor = {name: actorName, id: data.results[0].id};
       console.log(data.results[0].id)
 
     });
   };
 
+  //Ask for list of movies by actor id
   movies.getMoviesByActor = function(actorId){
 
-    return $http.get('moviesByActor' + actorId).success(function (data) {
+    return $http.get('/moviesByActor' + actorId).success(function (data) {
       
-      debugger;
       console.log(data.results[0].id)
       var tempMovieList = [];
       angular.copy(data.results, tempMovieList);
@@ -135,29 +130,28 @@ app.factory('moviesService', ['$http', function ($http) {
           })
 
       }
-      console.log(movies.moviesPull);
 
     });
   };
 
-
-
-  movies.getMoviesByGenreFromServer = function (genre) {
-     $http.get('moviesServer/').success(function (data) {
-      console.log(data)
-
-      angular.copy(data, movies.moviesPull);
-    });
-  };
-
-  movies.getMoviesByPGFromServer = function (pg) {
-     $http.get('moviesServer').success(function (data) {
-      console.log(data)
-
-      angular.copy(data, movies.moviesPull); 
-    });
-  };
 
   return movies;
 
 }]);
+
+
+ // movies.getMoviesByGenreFromServer = function (genre) {
+  //    $http.get('moviesServer/').success(function (data) {
+  //     console.log(data)
+
+  //     angular.copy(data, movies.moviesPull);
+  //   });
+  // };
+
+  // movies.getMoviesByPGFromServer = function (pg) {
+  //    $http.get('moviesServer').success(function (data) {
+  //     console.log(data)
+
+  //     angular.copy(data, movies.moviesPull); 
+  //   });
+  // };
