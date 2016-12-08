@@ -23,7 +23,7 @@
                 <select class="btn btn-primary dropdown-toggle" ng-options="item as item.label for item in pgOptions track by item.id" ng-model="selectedpg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></select>
               </div> <!-- dropdown PG closer -->
               <form class="actor_input">
-                <input type="text" name="actor_search" placeholder="Actors" ng-modle="actorModel">
+                <input type="text" name="actor_search" placeholder="Actors" ng-model="actorModel">
               </form>
             </div> <!-- btn-group closer -->
           </div> <!-- col closer -->
@@ -37,7 +37,7 @@
       <div class="row">
         <div class="col-md-2 col-md-offset-4">
           <h1 class="main_head">RANDOMIZE</h1>
-          <button type="button" class="btn btn-link" ng-click="btnRand()">
+          <button type="button" class="btn btn-link" ng-click="btnRand()" ng-model="randButton">
             <a href="javascript:void(0);">
               <img class="btn-img" src="http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons/glossy-black-icons-sports-hobbies/044485-glossy-black-icon-sports-hobbies-film-reel.png">
             </a>
@@ -48,10 +48,11 @@
   </div>
    <!--  <hr> DISPLAY SECTION -->
 
+
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <div class="col-md-4 col-md-offset-1 movi-item" ng-repeat="movie in suggestedMovies">
+          <div class="col-md-4 col-md-offset-1 movi-item" ng-repeat="movie in suggestedMovies track by $index">
              <img class="movie-image img-thumbnail" src="{{movie.img}}">
              <h2 class="title">{{movie.title}}</h2>
              <h3 class="genre">Genre: {{movie.genre}}</h3>

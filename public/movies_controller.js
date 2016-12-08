@@ -3,9 +3,27 @@
 /******Handle all the inputs and outputs*************/
 /****************************************************/
 
+
+// $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+//     if (toState.resolve) {
+//         $scope.showSpinner();
+//     }
+// });
+
+// $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+//     if (toState.resolve) {
+//         $scope.hideSpinner();
+//     }
+// });
+
+
 app.controller('moviesController', ['$scope','moviesService','$window' , function($scope, moviesService, $window){
 
+  $scope.pgOptions = moviesService.pg;
 
+  $scope.actorModel = "";
+
+  $scope.selectedpg = moviesService.pg[0];
 
   var moviesOptions = [];
 
@@ -15,24 +33,35 @@ app.controller('moviesController', ['$scope','moviesService','$window' , functio
   });
   
 
-  
-
-  $scope.pgOptions = moviesService.pg;
-
-  $scope.selectedpg = moviesService.pg[0];
-
   $scope.suggestedMovies = moviesOptions;
 
 
   $scope.btnRand = function(){
 
-      moviesService.getMoviesFromDummy();
-      for(var i = 0; i < 2; i++){
-        moviesOptions[i] = moviesService.getRandMovie();
-      }
+    moviesService.emptyMoviesPull();
+    //moviesOptions = [];
 
-      
+
+    if($scope.actorModel == ""){ //Getting movies by Genre
+      moviesService.getMoviesByGenre($scope.selectedGenre).then(function () {
+        
+        for(var i = 0; i < 2; i++){
+          moviesOptions[i] = moviesService.getRandMovie();
+        }
+      });
+    }else{ //Getting movies by Actor
+      moviesService.actorIdByActorName($scope.actorModel).then(function (){
+        moviesService.getMoviesByActor(moviesService.actor.id).then(function () {
+        
+          for(var i = 0; i < 2; i++){
+          moviesOptions[i] = moviesService.getRandMovie();
+          }
+        });  
+      })
+    }
+         
   };
+
 
   $scope.btnRemove = function(movie){
     // if(moviesService.movie < 2){
@@ -47,7 +76,6 @@ app.controller('moviesController', ['$scope','moviesService','$window' , functio
       $window.alert('Thats it !!!');
     }
   };
-
 
 
 }]);

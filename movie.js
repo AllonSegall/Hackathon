@@ -1,17 +1,17 @@
-var mongoose = require('mongoose');
+// var mongoose = require('mongoose');
 
-var Schema = mongoose.Schema;
+// var Schema = mongoose.Schema;
 
-var movieSchema = new Schema({
- 	title: String,
- 	genre: String,
- 	actors: [String],
- 	runTime: String,
- 	img: String
-});
+// var movieSchema = new Schema({
+//  	title: String,
+//  	genre: String,
+//  	actors: [String],
+//  	runTime: String,
+//  	img: String
+// });
 
-var Movie = mongoose.model("movies", movieSchema);
-module.exports = Movie;
+// var Movie = mongoose.model("movies", movieSchema);
+// module.exports = Movie;
 
 
 
