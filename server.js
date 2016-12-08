@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 /***************Vars*******************/
 
-// Key 
+// Key
 var key = "?api_key=ac5bfb1c99b5f392467f92b03c6d872b";
 
 //URL templste for getting the genre list
@@ -42,11 +42,10 @@ var getMoviesByActorIdUrl = "https://api.themoviedb.org/3/discover/movie" + key 
 
 /*************API Functionality***************/
 
-//Gettint Data from out external API 
+//Gettint Data from out external API
 var requestDataFromApi = function(url){
   return request(url, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      //console.log(body);
     }
   })
 };
@@ -65,20 +64,17 @@ app.get('/genre', function (req, res) {
 
   request(getGenreListUrl, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      console.log(body);
       res.send(body)
     }
   })
-    
+
 });
-  
+
 //Sending list of movies by genre id
 app.get('/moviesByGenre:genreId', function (req, res) {
   var genre = req.params.genreId;
-  console.log(genre);
   request(getMoviesByGenreUrl + genre, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      console.log(body);
       res.send(body)
     }
   })
@@ -87,10 +83,8 @@ app.get('/moviesByGenre:genreId', function (req, res) {
 //Sending actor id by actor name
 app.get('/actor:actorName', function (req, res) {
   var actor = req.params.actorName;
-  console.log(actor);
   request(getActorByNameUrl + actor, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      console.log(body);
       res.send(body)
     }
   })
@@ -99,15 +93,11 @@ app.get('/actor:actorName', function (req, res) {
 //Sending list of movies by actor id
 app.get('/moviesByActor:actorId', function (req, res) {
   var actor = req.params.actorId;
-  console.log(actor);
   request(getMoviesByActorIdUrl + actor, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      console.log(body);
       res.send(body)
     }
   })
 });
 
  app.listen(8000);
-
-

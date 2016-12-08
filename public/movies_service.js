@@ -40,7 +40,7 @@ app.factory('moviesService', ['$http', function ($http) {
 
   }
 
-  
+
   movies.pg = dummyPG;
 
   //Helper func to get a random movie obj from the movies pull
@@ -68,7 +68,7 @@ app.factory('moviesService', ['$http', function ($http) {
   movies.emptyMoviesPull = function(){
     movies.moviesPull = [];
   }
- 
+
 
   /*************server comunication***************/
 
@@ -105,7 +105,6 @@ app.factory('moviesService', ['$http', function ($http) {
 
     return $http.get('/actor' + actorName).success(function (data) {
       movies.actor = {name: actorName, id: data.results[0].id};
-      console.log(data.results[0].id)
 
     });
   };
@@ -114,8 +113,7 @@ app.factory('moviesService', ['$http', function ($http) {
   movies.getMoviesByActor = function(actorId){
 
     return $http.get('/moviesByActor' + actorId).success(function (data) {
-      
-      console.log(data.results[0].id)
+
       var tempMovieList = [];
       angular.copy(data.results, tempMovieList);
       for(var i =0; i < tempMovieList.length ; i++){
@@ -152,6 +150,6 @@ app.factory('moviesService', ['$http', function ($http) {
   //    $http.get('moviesServer').success(function (data) {
   //     console.log(data)
 
-  //     angular.copy(data, movies.moviesPull); 
+  //     angular.copy(data, movies.moviesPull);
   //   });
   // };
