@@ -7,6 +7,10 @@
   color: red;
 }
 
+.fa-check {
+  color: green;
+}
+
 a {
 	position: relative;
     color: rgba(255,255,255,1);
@@ -79,7 +83,7 @@ body{
 .genre{
   color: white;
   font-family: Impact, Haettenschweiler, "Franklin Gothic Bold", Charcoal, "Helvetica Inserat", "Bitstream Vera Sans Bold", "Arial Black", "sans serif";
-  font-size: 40px;
+  font-size: 30px;
   font-style: normal;
   font-variant: normal;
   font-weight: 500;
@@ -88,7 +92,7 @@ body{
 .overview{
   color: white;
   font-family: Impact, Haettenschweiler, "Franklin Gothic Bold", Charcoal, "Helvetica Inserat", "Bitstream Vera Sans Bold", "Arial Black", "sans serif";
-  font-size: 22px;
+  font-size: 18px;
   font-style: normal;
   font-variant: normal;
   font-weight: 500;
@@ -143,5 +147,3 @@ body{
   content: "";
   clear: both;
 }
-
-
