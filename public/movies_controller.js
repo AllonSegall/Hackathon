@@ -19,11 +19,11 @@
 
 app.controller('moviesController', ['$scope','moviesService','$window' , function($scope, moviesService, $window){
 
-  $scope.pgOptions = moviesService.pg;
-
   $scope.actorModel = "";
 
-  $scope.selectedpg = moviesService.pg[0];
+  $scope.customG = true;
+
+  $scope.customA = true;
 
   var moviesOptions = [];
 
@@ -31,10 +31,19 @@ app.controller('moviesController', ['$scope','moviesService','$window' , functio
        $scope.genreOptions = moviesService.genre;
        $scope.selectedGenre = moviesService.genre[0];
   });
-  
+
 
   $scope.suggestedMovies = moviesOptions;
 
+  $scope.makeShowG = function(){
+    $scope.customG = false;
+    $scope.customA = true;
+  };
+
+  $scope.makeShowA = function(){
+    $scope.customA = false;
+    $scope.customG = true;
+  };
 
   $scope.btnRand = function(){
 
@@ -44,7 +53,7 @@ app.controller('moviesController', ['$scope','moviesService','$window' , functio
 
     if($scope.actorModel == ""){ //Getting movies by Genre
       moviesService.getMoviesByGenre($scope.selectedGenre).then(function () {
-        
+
         for(var i = 0; i < 2; i++){
           moviesOptions[i] = moviesService.getRandMovie();
         }
@@ -52,14 +61,14 @@ app.controller('moviesController', ['$scope','moviesService','$window' , functio
     }else{ //Getting movies by Actor
       moviesService.actorIdByActorName($scope.actorModel).then(function (){
         moviesService.getMoviesByActor(moviesService.actor.id).then(function () {
-        
+
           for(var i = 0; i < 2; i++){
           moviesOptions[i] = moviesService.getRandMovie();
           }
-        });  
+        });
       })
     }
-         
+
   };
 
 
